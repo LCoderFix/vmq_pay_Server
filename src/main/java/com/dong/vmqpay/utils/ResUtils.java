@@ -30,4 +30,8 @@ public class ResUtils {
     public static BaseResponse fail() {
         return new BaseResponse.Builder(ResultCode.FAIL.getCode(), StatusCode.FAIL.getCode()).build();
     }
+
+    public static BaseResponse fail(String message) {
+        return new BaseResponse.Builder(ResultCode.FAIL.getCode(), StatusCode.FAIL.getCode()).message(message).build();
+    }
 }

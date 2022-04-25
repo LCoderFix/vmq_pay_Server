@@ -13,4 +13,7 @@ public interface PriceMapper {
 
     @Insert("insert into t_pay_tmp_price (price) values(#{price})")
     void insert(double price);
+
+    @Select("select count(price) from t_pay_tmp_price where price=#{price}")
+    int getCountByPrice(double price);
 }
