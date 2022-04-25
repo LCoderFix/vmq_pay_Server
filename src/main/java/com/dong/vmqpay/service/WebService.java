@@ -8,9 +8,11 @@ import com.dong.vmqpay.pojo.PayOrder;
 import com.dong.vmqpay.pojo.res.CreateOrderRes;
 import com.dong.vmqpay.utils.Arith;
 import com.dong.vmqpay.utils.ResUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,17 +28,17 @@ public class WebService {
     private static Logger logger = Logger.getLogger("WebService.class");
 
 
-    private boolean isContainPrice(double price) {
-        return priceMapper.getCountByPrice(price) > 0;
+    private boolean isContainPrice(int type, double price) {
+        return priceMapper.getCountByPrice(type, price) > 0;
     }
 
-    public BaseResponse createOrder(double price) {
+    public BaseResponse createOrder(double price, @RequestParam(required = false) int payType) {
         double realPrice = price;
-        while (isContainPrice(realPrice)) {
+        while (isContainPrice(payType, realPrice)) {
             realPrice = Arith.add(realPrice, 0.01);
         }
         logger.info(String.format("%s", realPrice));
-        priceMapper.insert(realPrice);
+        priceMapper.insert(payType, realPrice);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         String orderNo = String.format("%s%s", dateFormat.format(new Date()), ((int) (1000 + Math.random() * (9999 - 1000))));
         logger.info(String.format("%s,%s", orderNo, realPrice));

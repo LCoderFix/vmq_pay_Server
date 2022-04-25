@@ -1,8 +1,10 @@
 package com.dong.vmqpay.controller;
 
 import com.dong.vmqpay.pojo.BaseResponse;
+import com.dong.vmqpay.pojo.mail.ToEmail;
 import com.dong.vmqpay.pojo.res.CreateOrderRes;
 import com.dong.vmqpay.service.WebService;
+import com.dong.vmqpay.utils.MailUtils;
 import com.dong.vmqpay.utils.ResUtils;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
@@ -11,6 +13,9 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +36,10 @@ import java.util.logging.Logger;
 public class WebController {
     @Autowired
     private WebService webService;
+    @Autowired
+    private JavaMailSender mailSender;
+    @Value("${spring.mail.username}")
+    private String from;
     private static Logger logger = Logger.getLogger("WebController.class");
 
 
@@ -41,13 +50,13 @@ public class WebController {
 
     @RequestMapping("/createOrder")
     public String createOrder(double price) {
-        BaseResponse baseResponse = webService.createOrder(price);
+        BaseResponse baseResponse = webService.createOrder(price, 1);
         CreateOrderRes res = ((CreateOrderRes) baseResponse.getData());
         return "<script>window.location.href = '/paypage/pay.html?orderNo=" + res.getOrderNo() + "'</script>";
     }
 
     @RequestMapping("/getOrder")
-    public BaseResponse getOrder(String orderNo){
+    public BaseResponse getOrder(String orderNo) {
         logger.info("getOrder");
         return webService.getOrder(orderNo);
     }
@@ -134,6 +143,11 @@ public class WebController {
             }
         }
         return ResUtils.fail();
+    }
+
+    @RequestMapping("/appPush")
+    public void appPush() {
+        MailUtils.getInstance(from, mailSender).sendEmail(new ToEmail(new String[]{"507085831@qq.com"}, "测试", "测试一下"));
     }
 
 }

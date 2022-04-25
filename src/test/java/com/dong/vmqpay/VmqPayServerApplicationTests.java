@@ -15,7 +15,7 @@ class VmqPayServerApplicationTests {
     @Test
     void contextLoads() {
         System.out.println(SpringVersion.getVersion());
-        mapper.insert(111);
+        mapper.insert(1, 111);
         System.out.println(mapper.getPriceCount());
     }
 

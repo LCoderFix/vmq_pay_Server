@@ -26,5 +26,24 @@ spring:
   servlet:
     multipart:
       max-file-size: 100MB
+  mail:
+    #smtp服务主机
+    host: smtp.163.com
+    #服务协议
+    protocol: smtp
+    #编码集
+    default-encoding: UTF-8
+    #发送邮件的账户
+    username: jundong_liu@163.com
+    #授权码
+    password:
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 server:
   port: 80
