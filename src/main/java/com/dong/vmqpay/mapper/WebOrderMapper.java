@@ -18,7 +18,11 @@ public interface WebOrderMapper {
             @Result(column = "pay_url", property = "payUrl"),
             @Result(column = "created_time", property = "createdTime"),
             @Result(column = "pay_type", property = "payType"),
-            @Result(column = "order_real_price",property = "orderRealPrice")
+            @Result(column = "order_real_price", property = "orderRealPrice")
     })
     PayOrder getOrder(String orderNo);
+
+
+    @Update("update t_pay_order set order_status=3 where UNIX_TIMESTAMP(created_at)*1000<#{expiredTime} and order_status=1")
+    int updateExpiredOrderStatus(long expiredTime);
 }
