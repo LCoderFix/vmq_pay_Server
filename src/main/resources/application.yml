@@ -47,3 +47,8 @@ spring:
             required: true
 server:
   port: 80
+
+netty:
+  server:
+    port: 8089
+    enable: true
