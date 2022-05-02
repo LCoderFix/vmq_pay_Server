@@ -1,7 +1,7 @@
 package com.dong.vmqpay.netty.server;
 
+import com.dong.vmqpay.module.exec.Dispatcher;
 import com.dong.vmqpay.netty.pojo.Request;
-import com.dong.vmqpay.netty.pojo.Response;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -16,10 +16,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        log.info("接收消息成功");
         Request request = ((Request) msg);
-        Response response = new Response(request, "success");
-        ctx.writeAndFlush(response);
+        log.info("接收消息成功{}",request);
+//        Response response = new Response(request, "success");
+//        ctx.writeAndFlush(response);
+        Dispatcher.submit(ctx.channel(), request);
     }
 
     @Override

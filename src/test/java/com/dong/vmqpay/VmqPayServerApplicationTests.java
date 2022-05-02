@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.SpringVersion;
 
+import static com.dong.vmqpay.module.Constants.MSG_TYPE_HEART;
+
 @SpringBootTest
 class VmqPayServerApplicationTests {
 
@@ -24,7 +26,9 @@ class VmqPayServerApplicationTests {
     @Test
     void testClient(){
         Client client=new Client("127.0.0.1",8089);
-        client.send(new Request(12,"test"));
+        Request request=new Request(MSG_TYPE_HEART,"test");
+        request.setParams(new Object[]{1});
+        client.send(request);
         while (true){
 
         }

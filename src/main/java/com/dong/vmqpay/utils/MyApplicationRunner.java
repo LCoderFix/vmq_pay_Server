@@ -2,6 +2,7 @@ package com.dong.vmqpay.utils;
 
 import com.dong.vmqpay.mapper.SettingMapper;
 import com.dong.vmqpay.netty.server.Server;
+import com.dong.vmqpay.utils.handler.ClassUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -26,6 +27,7 @@ public class MyApplicationRunner implements ApplicationRunner {
         if (settingMapper.getSettingCount() == 0) {
             logger.info("检测到系统首次启动，正在进行初始化");
         }
+        ClassUtils.init();
         server.run();
     }
 }

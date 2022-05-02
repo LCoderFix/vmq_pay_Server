@@ -18,7 +18,6 @@ public class Response implements Serializable {
     @NonNull
     private Object result;
 
-
     public Response(Request request, Object result) {
         this.id = request.getId();
         this.type = request.getType();
